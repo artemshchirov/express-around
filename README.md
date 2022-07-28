@@ -1,7 +1,7 @@
 # Around the World. Front-end + Back-end
 
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/artemshchirov/around-express/actions/workflows/tests-13-sprint.yml) 
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/artemshchirov/around-express/actions/workflows/tests-14-sprint.yml)
+[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/artemshchirov/express-mesto-gha/actions/workflows/tests-13-sprint.yml) 
+[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/artemshchirov/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
 
 ## Directories
 
