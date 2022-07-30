@@ -1,3 +1,13 @@
-const express = require("express");
+const userRoutes = require("express").Router();
 
-const routes = express.Router();
+const {
+  getUsers,
+  getUser,
+  createUser,
+} = require("../controllers/userControllers");
+
+userRoutes.get("/", getUsers);
+userRoutes.get("/:userId", getUser);
+userRoutes.post("/", createUser);
+
+module.exports = { userRoutes };

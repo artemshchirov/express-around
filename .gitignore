@@ -15,4 +15,5 @@ node_modules
 .vscode
 
 # dev
-.requests
+/requests.http
+/docker-compose.yml
