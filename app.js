@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 app.use(routes);
 
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017");
+  await mongoose.connect("mongodb://localhost:27017/mestodb");
   console.log("Connected to db");
 
   await app.listen(PORT);

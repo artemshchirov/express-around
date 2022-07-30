@@ -2,18 +2,18 @@ const { User } = require("../models/userModels");
 
 exports.getUsers = async (req, res) => {
   const users = await User.find({});
+  console.log("users: ", users);
   res.send(users);
 };
 
-exports.getUser = (req, res) => {
-  res.send("test getUser");
-  // res.send(users.find(({ id }) => id === req.params.id));
+exports.getUserById = async (req, res) => {
+  console.log(`getUserById: ${req.params.userId}`);
+  const user = await User.findById(req.params.userId);
+  res.send(user);
 };
 
-exports.createUser = (req, res) => {
-  res.send({
-    name: "name",
-    about: "about",
-    avatar: "avatar",
-  });
+exports.createUser = async (req, res) => {
+  console.log("new user created: ", req.body);
+  const user = await User.create(req.body);
+  res.send(user);
 };
