@@ -8,7 +8,7 @@ routes.use("/users", userRoutes);
 routes.use("/cards", cardRoutes);
 
 routes.use("/", (req, res) => {
-  res.status(NOT_FOUND).send("404 Not Found");
+  res.status(NOT_FOUND).send({ message: "404 Page Not Found" });
 });
 
 module.exports = { routes };

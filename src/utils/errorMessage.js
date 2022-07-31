@@ -8,7 +8,7 @@ exports.errorMessage = (err, req, res) => {
   switch (err.name) {
     case "CastError":
       res.status(BAD_REQUEST).send({
-        message: "Переданы некорректные данные",
+        message: "400 Bad Request",
       });
       return;
 
@@ -20,13 +20,13 @@ exports.errorMessage = (err, req, res) => {
 
     case "DocumentNotFoundError":
       res.status(NOT_FOUND).send({
-        message: "Объект не найден",
+        message: "404 Document Not Found",
       });
       return;
 
     default:
       res.status(INTERNAL_SERVER_ERROR).send({
-        message: "На сервере произошла ошибка",
+        message: "500 Internal Server Error",
       });
   }
 };
