@@ -5,7 +5,7 @@ const {
 } = require("./constants");
 
 exports.errorMessage = (err, req, res) => {
-  switch (err.name) {
+  switch (err) {
     case "CastError":
       res.status(BAD_REQUEST).send({
         message: "Переданы некорректные данные",
