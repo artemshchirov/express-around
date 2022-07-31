@@ -12,6 +12,7 @@
     "no-console": 0,
     "quotes": [2, "double"],
     "no-unused-vars": 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "no-underscore-dangle": 0
   }
 }
