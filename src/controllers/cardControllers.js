@@ -38,7 +38,7 @@ exports.createCard = async (req, res) => {
       }
     );
     newCard.populate("owner");
-    res.send(newCard);
+    res.status(OK).send(newCard);
   } catch (err) {
     errorMessage(err, req, res);
   }

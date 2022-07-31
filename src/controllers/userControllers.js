@@ -4,13 +4,22 @@ const OK = 200;
 const { errorMessage } = require("../utils/errorMessage");
 
 exports.getUsers = async (req, res) => {
-  const users = await User.find({});
-  res.send(users);
+  try {
+    const users = await User.find({});
+    res.status(OK).send(users);
+  } catch (err) {
+    errorMessage(err, req, res);
+  }
 };
 
 exports.getUserById = async (req, res) => {
-  const user = await User.findById(req.params.userId);
-  res.send(user);
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    res.status(OK).send(user);
+  } catch (err) {
+    errorMessage(err, req, res);
+  }
 };
 
 exports.createUser = async (req, res) => {
@@ -20,45 +29,50 @@ exports.createUser = async (req, res) => {
       name,
       about,
       avatar,
-      new: true,
-      runValidators: true,
     });
-
-    res.send({ data: newUser });
+    res.status(OK).send(newUser);
   } catch (err) {
-    if (err.name === "ValidationError") {
-      return res.status(400).send({ message: "Некорректные данные" });
-    }
-    return res.status(500).send({ message: "Произошла ошибка" });
+    errorMessage(err, req, res);
   }
 };
 
 exports.updateProfile = async (req, res) => {
   const { name, about } = req.body;
-  const profile = await User.findByIdAndUpdate(req.user._id, {
-    name,
-    about,
-    new: true,
-    runValidators: true,
-    upsert: true,
-  })
-    .then((updatedProfile) => res.send({ data: updatedProfile }))
-    .catch((err) => {
-      res.send({
-        message:
-          "Данные не прошли валидацию. Либо произошло что-то совсем немыслимое",
-      });
-    });
-  res.send(profile);
+  const { _id } = req.user;
+  try {
+    const profile = await User.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        about,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(OK).send(profile);
+  } catch (err) {
+    errorMessage(err, req, res);
+  }
 };
 
 exports.updateAvatar = async (req, res) => {
   const { avatar } = req.body;
-  const profile = await User.findByIdAndUpdate(req.user._id, {
-    avatar,
-    new: true,
-    runValidators: true,
-    upsert: true,
-  });
-  res.send(profile);
+  const { _id } = req.user;
+  try {
+    const profile = await User.findByIdAndUpdate(
+      _id,
+      {
+        avatar,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(OK).send(profile);
+  } catch (err) {
+    errorMessage(err, req, res);
+  }
 };

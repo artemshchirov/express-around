@@ -21,21 +21,20 @@ app.use((req, res, next) => {
   req.user = {
     _id: "62e64c0f2b9f35a3909acaff",
   };
-
   next();
 });
 
 app.use(routes);
 
 function main() {
+  const url = "mongodb://localhost:27017/mestodb";
   try {
-    mongoose.connect("mongodb://localhost:27017/mestodb", (err) => {
+    mongoose.connect(url, (err) => {
       if (err) throw err;
       console.log("Connected to db");
     });
   } catch (err) {
-    console.log(`err: ${err}`);
-    // handleError(err);
+    throw new Error(err.message);
   }
 
   app.listen(PORT);
