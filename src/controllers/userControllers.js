@@ -7,7 +7,7 @@ exports.getUsers = async (req, res) => {
     const users = await User.find({});
     res.status(OK).send(users);
   } catch (err) {
-    errorMessage(err.name, req, res);
+    errorMessage(err, req, res);
   }
 };
 
@@ -17,7 +17,7 @@ exports.getUserById = async (req, res) => {
     const user = await User.findById(userId).orFail();
     res.status(OK).send(user);
   } catch (err) {
-    errorMessage(err.name, req, res);
+    errorMessage(err, req, res);
   }
 };
 
@@ -31,7 +31,7 @@ exports.createUser = async (req, res) => {
     });
     res.status(CREATED).send(newUser);
   } catch (err) {
-    errorMessage(err.name, req, res);
+    errorMessage(err, req, res);
   }
 };
 
@@ -52,7 +52,7 @@ exports.updateProfile = async (req, res) => {
     );
     res.status(OK).send({ data: profile });
   } catch (err) {
-    errorMessage(err.name, req, res);
+    errorMessage(err, req, res);
   }
 };
 
@@ -72,6 +72,6 @@ exports.updateAvatar = async (req, res) => {
     );
     res.status(OK).send({ data: profile });
   } catch (err) {
-    errorMessage(err.name, req, res);
+    errorMessage(err, req, res);
   }
 };
