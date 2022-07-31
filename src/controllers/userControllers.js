@@ -1,7 +1,6 @@
 const { User } = require("../models/userModels");
-
-const OK = 200;
 const { errorMessage } = require("../utils/errorMessage");
+const { OK, CREATED } = require("../utils/constants");
 
 exports.getUsers = async (req, res) => {
   try {
@@ -15,7 +14,7 @@ exports.getUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   const { userId } = req.params;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).orFail();
     res.status(OK).send(user);
   } catch (err) {
     errorMessage(err, req, res);
@@ -30,7 +29,7 @@ exports.createUser = async (req, res) => {
       about,
       avatar,
     });
-    res.status(OK).send(newUser);
+    res.status(CREATED).send(newUser);
   } catch (err) {
     errorMessage(err, req, res);
   }
@@ -51,7 +50,7 @@ exports.updateProfile = async (req, res) => {
         runValidators: true,
       }
     );
-    res.status(OK).send(profile);
+    res.status(OK).send({ data: profile });
   } catch (err) {
     errorMessage(err, req, res);
   }
@@ -71,7 +70,7 @@ exports.updateAvatar = async (req, res) => {
         runValidators: true,
       }
     );
-    res.status(OK).send(profile);
+    res.status(OK).send({ data: profile });
   } catch (err) {
     errorMessage(err, req, res);
   }

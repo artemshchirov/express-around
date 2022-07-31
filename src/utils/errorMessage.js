@@ -1,6 +1,8 @@
-const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
-const INTERNAL_SERVER_ERROR = 500;
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
+} = require("./constants");
 
 exports.errorMessage = (err, req, res) => {
   switch (err.name) {
