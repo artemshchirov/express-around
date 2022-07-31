@@ -19,8 +19,6 @@ const cardSchema = mongoose.Schema({
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      minlength: 2,
-      maxlength: 30,
       default: [],
     },
   ],

@@ -27,11 +27,18 @@ app.use((req, res, next) => {
 
 app.use(routes);
 
-async function main() {
-  await mongoose.connect("mongodb://localhost:27017/mestodb");
-  console.log("Connected to db");
+function main() {
+  try {
+    mongoose.connect("mongodb://localhost:27017/mestodb", (err) => {
+      if (err) throw err;
+      console.log("Connected to db");
+    });
+  } catch (err) {
+    console.log(`err: ${err}`);
+    // handleError(err);
+  }
 
-  await app.listen(PORT);
+  app.listen(PORT);
   console.log(`Server listen on ${PORT}`);
 }
 

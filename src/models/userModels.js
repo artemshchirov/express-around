@@ -16,6 +16,12 @@ const userSchema = mongoose.Schema({
   avatar: {
     type: String,
     required: true,
+    validate: {
+      validator(text) {
+        return text.indexOf("https://") === 0;
+      },
+      message: "avatar link must start with https://",
+    },
   },
 });
 
