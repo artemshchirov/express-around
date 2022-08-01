@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const cardSchema = mongoose.Schema({
   name: {
@@ -12,14 +12,14 @@ const cardSchema = mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return text.indexOf("https://") === 0;
+        return text.indexOf('https://') === 0;
       },
-      message: "avatar link must start with https://",
+      message: 'avatar link must start with https://',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'user',
     required: true,
   },
   likes: [
@@ -34,4 +34,4 @@ const cardSchema = mongoose.Schema({
   },
 });
 
-exports.Card = mongoose.model("card", cardSchema);
+exports.Card = mongoose.model('card', cardSchema);

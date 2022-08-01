@@ -1,6 +1,6 @@
-const { User } = require("../models/userModels");
-const { errorMessage } = require("../utils/errorMessage");
-const { OK, CREATED } = require("../utils/constants");
+const { User } = require('../models/userModels');
+const { errorMessage } = require('../utils/errorMessage');
+const { OK, CREATED } = require('../utils/constants');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -48,7 +48,7 @@ exports.updateProfile = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
     res.status(OK).send({ data: profile });
   } catch (err) {
@@ -68,7 +68,7 @@ exports.updateAvatar = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
     res.status(OK).send({ data: profile });
   } catch (err) {

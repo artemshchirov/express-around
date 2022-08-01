@@ -1,16 +1,11 @@
-const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
-const { routes } = require("./src/routes/routes.js");
+const express = require('express');
+const mongoose = require('mongoose');
+const { routes } = require('./src/routes/routes.js');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(express.json());
-
-const PUBLIC_FOLDER = path.join(__dirname, "public");
-
-app.use(express.static(PUBLIC_FOLDER));
 
 app.use((req, res, next) => {
   console.log(`${req.method}: ${req.path} ${JSON.stringify(req.body)}`);
@@ -19,7 +14,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "62e64c0f2b9f35a3909acaff",
+    _id: '62e64c0f2b9f35a3909acaff',
   };
   next();
 });
@@ -27,11 +22,11 @@ app.use((req, res, next) => {
 app.use(routes);
 
 function main() {
-  const url = "mongodb://localhost:27017/mestodb";
+  const url = 'mongodb://localhost:27017/mestodb';
   try {
     mongoose.connect(url, (err) => {
       if (err) throw err;
-      console.log("Connected to db");
+      console.log('Connected to db');
     });
   } catch (err) {
     throw new Error(err.message);

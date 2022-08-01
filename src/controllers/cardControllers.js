@@ -1,6 +1,6 @@
-const { Card } = require("../models/cardModels");
-const { errorMessage } = require("../utils/errorMessage");
-const { OK, CREATED } = require("../utils/constants");
+const { Card } = require('../models/cardModels');
+const { errorMessage } = require('../utils/errorMessage');
+const { OK, CREATED } = require('../utils/constants');
 
 exports.getCards = async (req, res) => {
   try {
@@ -15,8 +15,8 @@ exports.deleteCardById = async (req, res) => {
   const { cardId } = req.params;
   try {
     const card = await Card.findByIdAndRemove(cardId).orFail(() => {
-      const e = new Error("404: card with _id not found");
-      e.name = "DocumentNotFoundError";
+      const e = new Error('404: card with _id not found');
+      e.name = 'DocumentNotFoundError';
       throw e;
     });
     res.status(OK).send({ data: card });
@@ -33,13 +33,10 @@ exports.createCard = async (req, res) => {
       name,
       link,
       owner: _id,
-      new: true,
-      runValidators: true,
     });
-    newCard.populate("owner");
+    newCard.populate('owner');
     res.status(CREATED).send(newCard);
   } catch (err) {
-    console.log(err);
     errorMessage(err, req, res);
   }
 };
@@ -51,10 +48,10 @@ exports.likeCard = async (req, res) => {
     const card = await Card.findByIdAndUpdate(
       cardId,
       { $addToSet: { likes: _id } },
-      { new: true }
+      { new: true },
     ).orFail(() => {
-      const e = new Error("404: Card Not Found");
-      e.name = "DocumentNotFoundError";
+      const e = new Error('404: Card Not Found');
+      e.name = 'DocumentNotFoundError';
       throw e;
     });
     res.status(OK).send({ data: card });
@@ -70,10 +67,10 @@ exports.dislikeCard = async (req, res) => {
     const card = await Card.findByIdAndUpdate(
       cardId,
       { $pull: { likes: _id } },
-      { new: true }
+      { new: true },
     ).orFail(() => {
-      const e = new Error("404: card with _id not found");
-      e.name = "DocumentNotFoundError";
+      const e = new Error('404: card with _id not found');
+      e.name = 'DocumentNotFoundError';
       throw e;
     });
     res.status(OK).send({ data: card });

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -18,11 +18,11 @@ const userSchema = mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return text.indexOf("https://") === 0;
+        return text.indexOf('https://') === 0;
       },
-      message: "avatar link must start with https://",
+      message: 'avatar link must start with https://',
     },
   },
 });
 
-exports.User = mongoose.model("user", userSchema);
+exports.User = mongoose.model('user', userSchema);
