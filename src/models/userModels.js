@@ -1,27 +1,45 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Frodo Baggins',
   },
   about: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'middle-earth explorer',
   },
   avatar: {
     type: String,
-    required: true,
     validate: {
       validator(text) {
-        return text.indexOf('https://') === 0;
+        return validator.isURL(text);
       },
-      message: 'avatar link must start with https://',
+      message: 'Avatar link must start with https://',
     },
+    default:
+      'https://github.com/artemshchirov/mesto/blob/main/src/images/frodo.jpg',
+  },
+  email: {
+    type: String,
+    minlength: 2,
+    required: true,
+    unique: true,
+    validate: {
+      validator(text) {
+        return validator.isEmail(text);
+      },
+      message: 'Invalid Email Format',
+    },
+  },
+  password: {
+    type: String,
+    required: true,
   },
 });
 

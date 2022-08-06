@@ -4,7 +4,7 @@ const {
   INTERNAL_SERVER_ERROR,
 } = require('./constants');
 
-exports.errorMessage = (err, req, res) => {
+exports.showErrorMessage = (err, req, res) => {
   switch (err.name) {
     case 'CastError':
       res.status(BAD_REQUEST).send({

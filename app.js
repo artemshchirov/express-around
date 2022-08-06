@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { routes } = require('./src/routes/routes.js');
+const { routes } = require('./src/routes/index');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -24,10 +24,17 @@ app.use(routes);
 function main() {
   const url = 'mongodb://localhost:27017/mestodb';
   try {
-    mongoose.connect(url, (err) => {
-      if (err) throw err;
-      console.log('Connected to db');
-    });
+    mongoose.connect(
+      url,
+      {
+        useNewUrlParser: true,
+        autoIndex: true,
+      },
+      (err) => {
+        if (err) throw err;
+        console.log('Connected to db');
+      }
+    );
   } catch (err) {
     throw new Error(err.message);
   }
