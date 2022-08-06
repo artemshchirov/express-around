@@ -1,7 +1,6 @@
 const routes = require('express').Router();
 const { userRoutes } = require('./userRoutes');
 const { cardRoutes } = require('./cardRoutes');
-
 const { NOT_FOUND } = require('../utils/constants');
 
 routes.use('/users', userRoutes);

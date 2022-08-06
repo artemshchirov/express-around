@@ -48,7 +48,7 @@ exports.likeCard = async (req, res) => {
     const card = await Card.findByIdAndUpdate(
       cardId,
       { $addToSet: { likes: _id } },
-      { new: true },
+      { new: true }
     ).orFail(() => {
       const e = new Error('404: Card Not Found');
       e.name = 'DocumentNotFoundError';
@@ -67,7 +67,7 @@ exports.dislikeCard = async (req, res) => {
     const card = await Card.findByIdAndUpdate(
       cardId,
       { $pull: { likes: _id } },
-      { new: true },
+      { new: true }
     ).orFail(() => {
       const e = new Error('404: card with _id not found');
       e.name = 'DocumentNotFoundError';
