@@ -27,12 +27,12 @@ exports.deleteCardById = async (req, res) => {
 
 exports.createCard = async (req, res) => {
   const { name, link } = req.body;
-  const { _id } = req.user;
+  const { id } = req.user;
   try {
     const newCard = await Card.create({
       name,
       link,
-      owner: _id,
+      owner: id,
     });
     newCard.populate('owner');
     res.status(CREATED).send(newCard);
