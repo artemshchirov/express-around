@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const { JWT_SECRET } = process.env;
+const { NODE_ENV, REACT_APP_JWT_SECRET } = process.env;
 
-exports.jwtSign = (id) => {
-  jwt.sign({ id }, JWT_SECRET);
-};
+exports.jwtSign = (id) => jwt.sign(
+  { id },
+  NODE_ENV === 'production' ? REACT_APP_JWT_SECRET : 'dev-secret',
+  { expiresIn: '7d' }
+);

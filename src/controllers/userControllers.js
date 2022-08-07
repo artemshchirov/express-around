@@ -1,18 +1,24 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models/userModels');
-const { showErrorMessage } = require('../utils/showErrorMessage');
-const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
 const { jwtSign } = require('../utils/jwtSign');
 const { jwtVerify } = require('../utils/jwtVerify');
+const { showErrorMessage } = require('../utils/showErrorMessage');
+const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email })
-    .orFail()
-    .then((user) => bcrypt.compare(password, user.password).then(() => {
-      const token = jwtSign(user._id);
-      res.status(OK).send({ data: token });
-    }))
+    .orFail(() => {
+      const e = new Error('401 Unauthorized');
+      e.name = 'Unauthorized';
+      throw e;
+    })
+    .then((user) => {
+      bcrypt.compare(password, user.password).then(() => {
+        const token = jwtSign(user._id);
+        res.status(OK).send({ data: token });
+      });
+    })
     .catch((err) => {
       showErrorMessage(err, req, res);
     });
@@ -20,15 +26,15 @@ exports.login = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const ifVerified = jwtVerify(req.headers.authorization);
-    console.log(
-      'req.headers.authorization: ',
-      req.headers.authorization,
-      'ifVerified: ',
-      ifVerified
-    );
-    const users = await User.find({});
-    res.status(OK).send({ data: users });
+    const isVerified = jwtVerify(req.headers.authorization);
+    if (isVerified) {
+      const users = await User.find({});
+      res.status(OK).send({ data: users });
+    } else {
+      const e = new Error('403 Authorized But Forbidden');
+      e.name = 'Forbidden';
+      throw e;
+    }
   } catch (err) {
     showErrorMessage(err, req, res);
   }

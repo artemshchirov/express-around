@@ -17,3 +17,4 @@ node_modules
 # dev
 /requests.http
 /docker-compose.yml
+/process.env
