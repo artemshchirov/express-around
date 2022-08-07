@@ -12,7 +12,7 @@ exports.showErrorMessage = (err, req, res) => {
   switch (err.name) {
     case 'CastError':
       res.status(BAD_REQUEST).send({
-        message: '400 Bad Request',
+        message: `400 Bad Request ${err.message}`,
       });
       return;
 

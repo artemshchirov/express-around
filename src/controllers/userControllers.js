@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models/userModels');
 const { jwtSign } = require('../utils/jwtSign');
-const { jwtVerify } = require('../utils/jwtVerify');
 const { showErrorMessage } = require('../utils/showErrorMessage');
 const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
 
@@ -26,18 +25,23 @@ exports.login = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    //   const isVerified = jwtVerify(req.headers.authorization);
-    //   if (isVerified) {
     const users = await User.find({});
     res.status(OK).send({ data: users });
-    // } else {
-    //   const e = new Error('403 Authorized But Forbidden');
-    //   e.name = 'Forbidden';
-    //   throw e;
-    // }
   } catch (err) {
     showErrorMessage(err, req, res);
   }
+};
+
+exports.getCurrentUser = (req, res) => {
+  const { id } = req.user;
+  User.findById(id)
+    .orFail()
+    .then((user) => {
+      res.status(OK).send({ data: user });
+    })
+    .catch((err) => {
+      showErrorMessage(err, req, res);
+    });
 };
 
 exports.getUserById = async (req, res) => {
