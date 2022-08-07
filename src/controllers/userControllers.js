@@ -26,15 +26,15 @@ exports.login = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const isVerified = jwtVerify(req.headers.authorization);
-    if (isVerified) {
-      const users = await User.find({});
-      res.status(OK).send({ data: users });
-    } else {
-      const e = new Error('403 Authorized But Forbidden');
-      e.name = 'Forbidden';
-      throw e;
-    }
+    //   const isVerified = jwtVerify(req.headers.authorization);
+    //   if (isVerified) {
+    const users = await User.find({});
+    res.status(OK).send({ data: users });
+    // } else {
+    //   const e = new Error('403 Authorized But Forbidden');
+    //   e.name = 'Forbidden';
+    //   throw e;
+    // }
   } catch (err) {
     showErrorMessage(err, req, res);
   }
