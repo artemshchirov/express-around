@@ -22,10 +22,10 @@ const userSchema = mongoose.Schema({
       validator(text) {
         return validator.isURL(text);
       },
-      message: 'Avatar link must be an URL',
+      message: 'Avatar link not URL',
     },
     default:
-      'https://github.com/artemshchirov/mesto/blob/main/src/images/frodo.jpg',
+      'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   email: {
     type: String,

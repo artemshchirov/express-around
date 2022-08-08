@@ -16,7 +16,10 @@ cardRoutes.delete(
   '/:cardId',
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().trim(true).alphanum().length(24),
+      cardId: Joi.string()
+        .trim(true)
+        .alphanum()
+        .length(24),
     }),
   }),
   validateCardOwner,
@@ -27,8 +30,15 @@ cardRoutes.post(
   '/',
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().trim(true).required().min(2).max(30),
-      link: Joi.string().trim(true).uri().required(),
+      name: Joi.string()
+        .trim(true)
+        .required()
+        .min(2)
+        .max(30),
+      link: Joi.string()
+        .trim(true)
+        .uri()
+        .required(),
     }),
   }),
   createCard
@@ -38,7 +48,10 @@ cardRoutes.put(
   '/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().trim(true).alphanum().length(24),
+      cardId: Joi.string()
+        .trim(true)
+        .alphanum()
+        .length(24),
     }),
   }),
   likeCard
@@ -48,7 +61,10 @@ cardRoutes.delete(
   '/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().trim(true).alphanum().length(24),
+      cardId: Joi.string()
+        .trim(true)
+        .alphanum()
+        .length(24),
     }),
   }),
   dislikeCard

@@ -1,5 +1,5 @@
-const routes = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const routes = require('express').Router();
 const auth = require('../middlewares/auth');
 const { userRoutes } = require('./userRoutes');
 const { cardRoutes } = require('./cardRoutes');
@@ -10,8 +10,13 @@ routes.post(
   '/signin',
   celebrate({
     body: Joi.object().keys({
-      email: Joi.string().trim(true).email().required(),
-      password: Joi.string().trim(true).required(),
+      email: Joi.string()
+        .trim(true)
+        .email()
+        .required(),
+      password: Joi.string()
+        .trim(true)
+        .required(),
     }),
   }),
   login
@@ -35,13 +40,18 @@ routes.post(
         .default('Исследователь'),
       avatar: Joi.string()
         .trim(true)
-        .uri()
+        .regex(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)
         .empty('')
         .default(
           'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'
         ),
-      email: Joi.string().trim(true).email().required(),
-      password: Joi.string().trim(true).required(),
+      email: Joi.string()
+        .trim(true)
+        .email()
+        .required(),
+      password: Joi.string()
+        .trim(true)
+        .required(),
     }),
   }),
   createUser
