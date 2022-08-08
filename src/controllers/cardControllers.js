@@ -1,31 +1,29 @@
 const { Card } = require('../models/cardModels');
-const { showErrorMessage } = require('../utils/showErrorMessage');
 const { OK, CREATED } = require('../utils/constants');
+const NotFoundError = require('../errors/NotFoundError');
 
-exports.getCards = async (req, res) => {
+exports.getCards = async (req, res, next) => {
   try {
     const cards = await Card.find({});
     res.status(OK).send(cards);
   } catch (err) {
-    showErrorMessage(err, req, res);
+    next(err);
   }
 };
 
-exports.deleteCardById = async (req, res) => {
+exports.deleteCardById = async (req, res, next) => {
   const { cardId } = req.params;
   try {
     const card = await Card.findByIdAndRemove(cardId).orFail(() => {
-      const e = new Error('404: card with _id not found');
-      e.name = 'DocumentNotFoundError';
-      throw e;
+      throw new NotFoundError('404: Card Not Found');
     });
     res.status(OK).send({ data: card });
   } catch (err) {
-    showErrorMessage(err, req, res);
+    next(err);
   }
 };
 
-exports.createCard = async (req, res) => {
+exports.createCard = async (req, res, next) => {
   const { name, link } = req.body;
   const { id } = req.user;
   try {
@@ -37,11 +35,11 @@ exports.createCard = async (req, res) => {
     newCard.populate('owner');
     res.status(CREATED).send(newCard);
   } catch (err) {
-    showErrorMessage(err, req, res);
+    next(err);
   }
 };
 
-exports.likeCard = async (req, res) => {
+exports.likeCard = async (req, res, next) => {
   const { cardId } = req.params;
   const { _id } = req.user;
   try {
@@ -50,17 +48,15 @@ exports.likeCard = async (req, res) => {
       { $addToSet: { likes: _id } },
       { new: true }
     ).orFail(() => {
-      const e = new Error('404: Card Not Found');
-      e.name = 'DocumentNotFoundError';
-      throw e;
+      throw new NotFoundError('404: Card Not Found');
     });
     res.status(OK).send({ data: card });
   } catch (err) {
-    showErrorMessage(err, req, res);
+    next(err);
   }
 };
 
-exports.dislikeCard = async (req, res) => {
+exports.dislikeCard = async (req, res, next) => {
   const { cardId } = req.params;
   const { _id } = req.user;
   try {
@@ -69,12 +65,10 @@ exports.dislikeCard = async (req, res) => {
       { $pull: { likes: _id } },
       { new: true }
     ).orFail(() => {
-      const e = new Error('404: card with _id not found');
-      e.name = 'DocumentNotFoundError';
-      throw e;
+      throw new NotFoundError('404: Card Not Found');
     });
     res.status(OK).send({ data: card });
   } catch (err) {
-    showErrorMessage(err, req, res);
+    next(err);
   }
 };

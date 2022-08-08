@@ -1,11 +1,11 @@
 const { jwtVerify } = require('../utils/jwtVerify');
-const { UNAUTHORIZED } = require('../utils/constants');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return res.status(UNAUTHORIZED).send({ message: '401 Unauthorized 1' });
+    next(new UnauthorizedError('401 Unauthorized'));
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwtVerify(token);
   } catch (err) {
-    return res.status(UNAUTHORIZED).send({ message: '401 Unauthorized 2' });
+    next(err);
   }
 
   req.user = payload;

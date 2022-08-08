@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { routes } = require('./src/routes/index');
+const { INTERNAL_SERVER_ERROR } = require('./src/utils/constants');
 
 const { PORT = 3000 } = process.env;
 
@@ -33,6 +34,16 @@ function main() {
   } catch (err) {
     throw new Error(err.message);
   }
+
+  app.use((err, req, res) => {
+    const { statusCode = INTERNAL_SERVER_ERROR, message } = err;
+    res.status(statusCode).send({
+      message:
+        statusCode === INTERNAL_SERVER_ERROR
+          ? '500 Internal Server Error'
+          : message,
+    });
+  });
 
   app.listen(PORT);
   console.log(`Server listen on ${PORT}`);
