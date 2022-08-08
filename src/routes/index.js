@@ -6,21 +6,42 @@ const { cardRoutes } = require('./cardRoutes');
 const { login, createUser } = require('../controllers/userControllers');
 const NotFoundError = require('../errors/NotFoundError');
 
-routes.post('/signin', login);
+routes.post(
+  '/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().trim(true).email().required(),
+      password: Joi.string().trim(true).required(),
+    }),
+  }),
+  login
+);
+
 routes.post(
   '/signup',
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().max(30).empty('').default('Frodo Baggins'),
-      about: Joi.string().max(30).empty('').default('Middle-earth explorer'),
+      name: Joi.string()
+        .trim(true)
+        .min(2)
+        .max(30)
+        .empty('')
+        .default('Жак-Ив Кусто'),
+      about: Joi.string()
+        .trim(true)
+        .min(2)
+        .max(30)
+        .empty('')
+        .default('Исследователь'),
       avatar: Joi.string()
+        .trim(true)
         .uri()
         .empty('')
         .default(
-          'https://github.com/artemshchirov/mesto/blob/main/src/images/frodo.jpg'
+          'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'
         ),
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
+      email: Joi.string().trim(true).email().required(),
+      password: Joi.string().trim(true).required(),
     }),
   }),
   createUser

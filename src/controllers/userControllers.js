@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models/userModels');
 const { jwtSign } = require('../utils/jwtSign');
 const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
-const ValidationError = require('../errors/ValidationError');
 const ConflictError = require('../errors/ConflictError');
+const NotFoundError = require('../errors/NotFoundError');
 
 exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -28,7 +28,7 @@ exports.getCurrentUser = (req, res, next) => {
 exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
-    res.status(OK).send({ data: users });
+    res.status(OK).send({ users });
   } catch (err) {
     next(err);
   }
@@ -38,14 +38,15 @@ exports.getUserById = async (req, res, next) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId).orFail(() => {
-      throw new ValidationError('400: User Not Found');
+      throw new NotFoundError('404: User Not Found');
     });
-    res.status(OK).send({ data: user });
+    res.status(OK).send({ user });
   } catch (err) {
     next(err);
   }
 };
 
+// eslint-disable-next-line consistent-return
 exports.createUser = async (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   try {

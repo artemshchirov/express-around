@@ -2,6 +2,7 @@ const { Card } = require('../models/cardModels');
 const ForbiddenError = require('../errors/ForbiddenError');
 const NotFoundError = require('../errors/NotFoundError');
 
+// eslint-disable-next-line consistent-return
 exports.validateCardOwner = async (req, res, next) => {
   const { id } = req.user;
   const { cardId } = req.params;
