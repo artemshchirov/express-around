@@ -38,7 +38,7 @@ function main() {
 
   app.use(errors());
 
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     const { statusCode = INTERNAL_SERVER_ERROR, message } = err;
 
     console.log('statusCode: ', statusCode);

@@ -50,20 +50,18 @@ exports.createUser = async (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   try {
     const hashPassword = await bcrypt.hash(password, SALT_ROUND);
-    const newUser = await User.create(
-      {
-        name,
-        about,
-        avatar,
-        email,
-        password: hashPassword,
-      },
-      (err) => {
-        if (err && err.code === 11000) { throw new ConflictError('409 Conflict: Not Unique Email'); }
-      }
-    );
+    const newUser = await User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hashPassword,
+    });
     res.status(CREATED).send({ data: newUser });
   } catch (err) {
+    if (err.code === 11000) {
+      next(new ConflictError('409 Conflict: Not Unique Email'));
+    }
     next(err);
   }
 };
