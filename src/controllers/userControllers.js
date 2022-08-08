@@ -59,7 +59,7 @@ exports.createUser = async (req, res, next) => {
         password: hashPassword,
       },
       (err) => {
-        if (err.code === 11000) { throw new ConflictError('409 Conflict: Not Unique Email'); }
+        if (err && err.code === 11000) { throw new ConflictError('409 Conflict: Not Unique Email'); }
       }
     );
     res.status(CREATED).send({ data: newUser });

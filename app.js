@@ -40,6 +40,10 @@ function main() {
 
   app.use((err, req, res) => {
     const { statusCode = INTERNAL_SERVER_ERROR, message } = err;
+
+    console.log('statusCode: ', statusCode);
+    console.log('message: ', message);
+
     res.status(statusCode).send({
       message:
         statusCode === INTERNAL_SERVER_ERROR
