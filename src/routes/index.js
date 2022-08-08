@@ -40,6 +40,7 @@ routes.post(
         .default('Исследователь'),
       avatar: Joi.string()
         .trim(true)
+        .regex(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)
         .uri()
         .empty('')
         .default(
