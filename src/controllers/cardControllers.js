@@ -1,6 +1,7 @@
 const { Card } = require('../models/cardModels');
 const { OK, CREATED } = require('../utils/constants');
 const NotFoundError = require('../errors/NotFoundError');
+const ValidationError = require('../errors/ValidationError');
 
 exports.getCards = async (req, res, next) => {
   try {
@@ -13,9 +14,11 @@ exports.getCards = async (req, res, next) => {
 
 exports.deleteCardById = async (req, res, next) => {
   const { cardId } = req.params;
+  console.log('cardId: ', cardId);
+
   try {
     const card = await Card.findByIdAndRemove(cardId).orFail(() => {
-      throw new NotFoundError('404: Card Not Found');
+      throw new ValidationError('400: Card Not Found');
     });
     res.status(OK).send({ data: card });
   } catch (err) {
@@ -41,11 +44,11 @@ exports.createCard = async (req, res, next) => {
 
 exports.likeCard = async (req, res, next) => {
   const { cardId } = req.params;
-  const { _id } = req.user;
+  const { id } = req.user;
   try {
     const card = await Card.findByIdAndUpdate(
       cardId,
-      { $addToSet: { likes: _id } },
+      { $addToSet: { likes: id } },
       { new: true }
     ).orFail(() => {
       throw new NotFoundError('404: Card Not Found');
@@ -58,11 +61,11 @@ exports.likeCard = async (req, res, next) => {
 
 exports.dislikeCard = async (req, res, next) => {
   const { cardId } = req.params;
-  const { _id } = req.user;
+  const { id } = req.user;
   try {
     const card = await Card.findByIdAndUpdate(
       cardId,
-      { $pull: { likes: _id } },
+      { $pull: { likes: id } },
       { new: true }
     ).orFail(() => {
       throw new NotFoundError('404: Card Not Found');

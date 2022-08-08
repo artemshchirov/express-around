@@ -11,9 +11,14 @@ routes.post(
   '/signup',
   celebrate({
     body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri(),
+      name: Joi.string().max(30).empty('').default('Frodo Baggins'),
+      about: Joi.string().max(30).empty('').default('Middle-earth explorer'),
+      avatar: Joi.string()
+        .uri()
+        .empty('')
+        .default(
+          'https://github.com/artemshchirov/mesto/blob/main/src/images/frodo.jpg'
+        ),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
     }),

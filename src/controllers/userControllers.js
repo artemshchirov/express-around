@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models/userModels');
 const { jwtSign } = require('../utils/jwtSign');
 const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
-const NotFoundError = require('../errors/NotFoundError');
+const ValidationError = require('../errors/ValidationError');
 const ConflictError = require('../errors/ConflictError');
 
 exports.login = (req, res, next) => {
@@ -38,7 +38,7 @@ exports.getUserById = async (req, res, next) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId).orFail(() => {
-      throw new NotFoundError('404: User Not Found');
+      throw new ValidationError('400: User Not Found');
     });
     res.status(OK).send({ data: user });
   } catch (err) {
@@ -57,10 +57,17 @@ exports.createUser = async (req, res, next) => {
       email,
       password: hashPassword,
     });
-    res.status(CREATED).send({ data: newUser });
+    res.status(CREATED).send({
+      newUser: {
+        name: newUser.name,
+        about: newUser.about,
+        avatar: newUser.avatar,
+        email: newUser.email,
+      },
+    });
   } catch (err) {
     if (err.code === 11000) {
-      next(new ConflictError('409 Conflict: Not Unique Email'));
+      return next(new ConflictError('409 Conflict: Not Unique Email'));
     }
     next(err);
   }

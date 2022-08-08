@@ -11,7 +11,15 @@ const {
 
 userRoutes.get('/', getUsers);
 userRoutes.get('/me', getCurrentUser);
-userRoutes.get('/:userId', getUserById);
+userRoutes.get(
+  '/:userId',
+  celebrate({
+    params: Joi.object().keys({
+      userId: Joi.string().alphanum().length(24),
+    }),
+  }),
+  getUserById
+);
 
 userRoutes.patch(
   '/me',
