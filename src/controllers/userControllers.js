@@ -3,6 +3,7 @@ const { User } = require('../models/userModels');
 const { jwtSign } = require('../utils/jwtSign');
 const { OK, CREATED, SALT_ROUND } = require('../utils/constants');
 const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
 
 exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -49,13 +50,18 @@ exports.createUser = async (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   try {
     const hashPassword = await bcrypt.hash(password, SALT_ROUND);
-    const newUser = await User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hashPassword,
-    });
+    const newUser = await User.create(
+      {
+        name,
+        about,
+        avatar,
+        email,
+        password: hashPassword,
+      },
+      (err) => {
+        if (err.code === 11000) { throw new ConflictError('409 Conflict: Not Unique Email'); }
+      }
+    );
     res.status(CREATED).send({ data: newUser });
   } catch (err) {
     next(err);
@@ -64,10 +70,10 @@ exports.createUser = async (req, res, next) => {
 
 exports.updateProfile = async (req, res, next) => {
   const { name, about } = req.body;
-  const { _id } = req.user;
+  const { id } = req.user;
   try {
     const profile = await User.findByIdAndUpdate(
-      _id,
+      id,
       {
         name,
         about,
@@ -85,10 +91,10 @@ exports.updateProfile = async (req, res, next) => {
 
 exports.updateAvatar = async (req, res, next) => {
   const { avatar } = req.body;
-  const { _id } = req.user;
+  const { id } = req.user;
   try {
     const profile = await User.findByIdAndUpdate(
-      _id,
+      id,
       {
         avatar,
       },

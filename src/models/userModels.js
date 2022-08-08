@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
       validator(text) {
         return validator.isURL(text);
       },
-      message: 'Avatar link must start with https://',
+      message: 'Avatar link must be an URL',
     },
     default:
       'https://github.com/artemshchirov/mesto/blob/main/src/images/frodo.jpg',
@@ -46,7 +46,11 @@ const userSchema = mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function (email, password, next) {
+userSchema.statics.findUserByCredentials = function findUserByCredentials(
+  email,
+  password,
+  next
+) {
   return this.findOne({ email })
     .select('+password')
     .orFail(() => {

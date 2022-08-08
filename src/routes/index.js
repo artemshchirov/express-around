@@ -1,9 +1,9 @@
 const routes = require('express').Router();
+const auth = require('../middlewares/auth');
 const { userRoutes } = require('./userRoutes');
 const { cardRoutes } = require('./cardRoutes');
-const { NOT_FOUND } = require('../utils/constants');
 const { login, createUser } = require('../controllers/userControllers');
-const auth = require('../middlewares/auth');
+const NotFoundError = require('../errors/NotFoundError');
 
 routes.post('/signin', login);
 routes.post('/signup', createUser);
@@ -13,8 +13,9 @@ routes.use(auth);
 routes.use('/users', userRoutes);
 routes.use('/cards', cardRoutes);
 
-routes.use('/', (req, res) => {
-  res.status(NOT_FOUND).send({ message: '404 Page Not Found' });
+routes.use('/', (req, res, next) => {
+  const err = new NotFoundError('404 Not Found Error');
+  next(err);
 });
 
 module.exports = { routes };

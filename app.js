@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 const { routes } = require('./src/routes/index');
 const { INTERNAL_SERVER_ERROR } = require('./src/utils/constants');
 
@@ -34,6 +35,8 @@ function main() {
   } catch (err) {
     throw new Error(err.message);
   }
+
+  app.use(errors());
 
   app.use((err, req, res) => {
     const { statusCode = INTERNAL_SERVER_ERROR, message } = err;

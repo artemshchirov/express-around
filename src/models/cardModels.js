@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const cardSchema = mongoose.Schema({
   name: {
@@ -12,9 +13,9 @@ const cardSchema = mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return text.indexOf('https://') === 0;
+        return validator.isURL(text);
       },
-      message: 'avatar link must start with https://',
+      message: 'Card link must be an URL',
     },
   },
   owner: {
