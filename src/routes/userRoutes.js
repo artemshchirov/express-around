@@ -1,5 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 const userRoutes = require('express').Router();
+const { validateURL } = require('../utils/validateURL');
 
 const {
   getUsers,
@@ -48,7 +49,7 @@ userRoutes.patch(
     body: Joi.object().keys({
       avatar: Joi.string()
         .trim(true)
-        .uri(),
+        .custom(validateURL),
     }),
   }),
   updateAvatar

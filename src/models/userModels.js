@@ -8,13 +8,13 @@ const userSchema = mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Frodo Baggins',
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'middle-earth explorer',
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
       validator(text) {
         return validator.isURL(text);
       },
-      message: 'Avatar link not URL',
+      message: 'Invalid Avatar URL',
     },
     default:
       'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',

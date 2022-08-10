@@ -1,6 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 const cardRoutes = require('express').Router();
 const { validateCardOwner } = require('../middlewares/validateCardOwner');
+const { validateURL } = require('../utils/validateURL');
 
 const {
   getCards,
@@ -37,7 +38,7 @@ cardRoutes.post(
         .max(30),
       link: Joi.string()
         .trim(true)
-        .uri()
+        .custom(validateURL)
         .required(),
     }),
   }),

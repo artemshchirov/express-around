@@ -5,6 +5,7 @@ const { userRoutes } = require('./userRoutes');
 const { cardRoutes } = require('./cardRoutes');
 const { login, createUser } = require('../controllers/userControllers');
 const NotFoundError = require('../errors/NotFoundError');
+const { validateURL } = require('../utils/validateURL');
 
 routes.post(
   '/signin',
@@ -29,23 +30,14 @@ routes.post(
       name: Joi.string()
         .trim(true)
         .min(2)
-        .max(30)
-        .empty('')
-        .default('Жак-Ив Кусто'),
+        .max(30),
       about: Joi.string()
         .trim(true)
         .min(2)
-        .max(30)
-        .empty('')
-        .default('Исследователь'),
+        .max(30),
       avatar: Joi.string()
         .trim(true)
-        .regex(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)
-        .uri()
-        .empty('')
-        .default(
-          'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'
-        ),
+        .custom(validateURL),
       email: Joi.string()
         .trim(true)
         .email()
