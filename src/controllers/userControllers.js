@@ -18,6 +18,8 @@ exports.login = (req, res, next) => {
 
 exports.getCurrentUser = (req, res, next) => {
   const { id } = req.user;
+  console.log('id: ', id);
+
   User.findById(id)
     .orFail(() => {
       throw new NotFoundError('404: User Not Found');
