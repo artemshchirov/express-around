@@ -6,12 +6,12 @@ module.exports = (req, res, next) => {
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
     next(new UnauthorizedError('401 Unauthorized'));
+    return;
   }
 
   const token = authorization.replace('Bearer ', '');
 
   let payload;
-
   try {
     payload = jwtVerify(token);
   } catch (err) {

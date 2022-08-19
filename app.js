@@ -5,7 +5,7 @@ const { errors } = require('celebrate');
 const { routes } = require('./src/routes/index');
 const { INTERNAL_SERVER_ERROR } = require('./src/utils/constants');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3002 } = process.env;
 
 const app = express();
 

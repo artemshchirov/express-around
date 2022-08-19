@@ -18,7 +18,6 @@ exports.login = (req, res, next) => {
 
 exports.getCurrentUser = (req, res, next) => {
   const { id } = req.user;
-  console.log('id: ', id);
 
   User.findById(id)
     .orFail(() => {
@@ -27,12 +26,7 @@ exports.getCurrentUser = (req, res, next) => {
     .then((user) => {
       res.status(OK).send({ user });
     })
-    .catch((err) => {
-      // if (err.name === 'CastError') {
-      //   return next(new NotFoundError('404: User Not Found'));
-      // }
-      next(err);
-    });
+    .catch(next);
 };
 
 exports.getUsers = async (req, res, next) => {
