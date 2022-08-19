@@ -6,50 +6,6 @@ const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 
-exports.login = (req, res, next) => {
-  const { email, password } = req.body;
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwtSign(user._id);
-      res.status(OK).send({ token });
-    })
-    .catch(next);
-};
-
-exports.getCurrentUser = (req, res, next) => {
-  const { id } = req.user;
-
-  User.findById(id)
-    .orFail(() => {
-      throw new NotFoundError('404: User Not Found');
-    })
-    .then((user) => {
-      res.status(OK).send({ user });
-    })
-    .catch(next);
-};
-
-exports.getUsers = async (req, res, next) => {
-  try {
-    const users = await User.find({});
-    res.status(OK).send({ users });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.getUserById = async (req, res, next) => {
-  const { userId } = req.params;
-  try {
-    const user = await User.findById(userId).orFail(() => {
-      throw new NotFoundError('404: User Not Found');
-    });
-    res.status(OK).send({ user });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.createUser = async (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   try {
@@ -76,6 +32,50 @@ exports.createUser = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new BadRequestError('400: Invalid Card Data'));
     }
+    next(err);
+  }
+};
+
+exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwtSign(user._id);
+      res.status(OK).send({ token });
+    })
+    .catch(next);
+};
+
+exports.getCurrentUser = (req, res, next) => {
+  const { id } = req.user;
+
+  User.findById(id)
+    .orFail(() => {
+      throw new NotFoundError('404: User Not Found');
+    })
+    .then((user) => {
+      res.status(OK).send(user);
+    })
+    .catch(next);
+};
+
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    res.status(OK).send({ users });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getUserById = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId).orFail(() => {
+      throw new NotFoundError('404: User Not Found');
+    });
+    res.status(OK).send({ user });
+  } catch (err) {
     next(err);
   }
 };

@@ -6,7 +6,7 @@ const BadRequestError = require('../errors/BadRequestError');
 exports.getCards = async (req, res, next) => {
   try {
     const cards = await Card.find({});
-    res.status(OK).send({ cards });
+    res.status(OK).send(cards);
   } catch (err) {
     next(err);
   }
@@ -18,7 +18,7 @@ exports.deleteCardById = async (req, res, next) => {
     const card = await Card.findByIdAndRemove(cardId).orFail(() => {
       throw new BadRequestError('400: Card Not Found');
     });
-    res.status(OK).send({ card });
+    res.status(OK).send(card);
   } catch (err) {
     next(err);
   }
@@ -34,7 +34,7 @@ exports.createCard = async (req, res, next) => {
       owner: id,
     });
     newCard.populate('owner');
-    res.status(CREATED).send({ newCard });
+    res.status(CREATED).send(newCard);
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequestError('400: Invalid Card Data'));
@@ -55,7 +55,7 @@ exports.likeCard = async (req, res, next) => {
     ).orFail(() => {
       throw new NotFoundError('404: Card Not Found');
     });
-    res.status(OK).send({ card });
+    res.status(OK).send(card);
   } catch (err) {
     next(err);
   }
@@ -72,7 +72,7 @@ exports.dislikeCard = async (req, res, next) => {
     ).orFail(() => {
       throw new NotFoundError('404: Card Not Found');
     });
-    res.status(OK).send({ card });
+    res.status(OK).send(card);
   } catch (err) {
     next(err);
   }

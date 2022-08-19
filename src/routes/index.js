@@ -11,11 +11,11 @@ routes.post(
   '/signup',
   celebrate({
     body: Joi.object().keys({
+      email: Joi.string().trim(true).email().required(),
+      password: Joi.string().trim(true).required(),
       name: Joi.string().trim(true).min(2).max(30),
       about: Joi.string().trim(true).min(2).max(30),
       avatar: Joi.string().trim(true).custom(validateURL),
-      email: Joi.string().trim(true).email().required(),
-      password: Joi.string().trim(true).required(),
     }),
   }),
   createUser
