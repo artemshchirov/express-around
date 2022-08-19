@@ -1,20 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { routes } = require('./src/routes/index');
+const { requestLogger, errorLogger } = require('./src/middlewares/logger');
 const { INTERNAL_SERVER_ERROR } = require('./src/utils/constants');
 
-const { PORT = 3002 } = process.env;
-
+const { PORT = 3000 } = process.env;
 const app = express();
-
 app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`${req.method}: ${req.path} ${JSON.stringify(req.body)}`);
   next();
 });
+
+app.use(requestLogger);
+
+app.use(cors());
 
 app.use(routes);
 
@@ -35,6 +39,8 @@ function main() {
   } catch (err) {
     throw new Error(err.message);
   }
+
+  app.use(errorLogger);
 
   app.use(errors());
 
