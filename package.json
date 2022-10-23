@@ -1,7 +1,7 @@
 {
-  "name": "express-mesto-gha",
+  "name": "express-around",
   "version": "1.0.0",
-  "description": "[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/artemshchirov/express-mesto-gha/actions/workflows/tests-13-sprint.yml) \r [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/artemshchirov/express-mesto-gha/actions/workflows/tests-14-sprint.yml)",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node ./app.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/artemshchirov/express-mesto-gha.git"
+    "url": "git+https://github.com/artemshchirov/express-mesto.git"
   },
   "author": "artemshchirov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/artemshchirov/express-mesto-gha/issues"
+    "url": "https://github.com/artemshchirov/express-mesto/issues"
   },
-  "homepage": "https://github.com/artemshchirov/express-mesto-gha#readme",
+  "homepage": "https://github.com/artemshchirov/express-mesto#readme",
   "devDependencies": {
     "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
